@@ -1,8 +1,8 @@
 // Client Cookie Config
-export const subscriptionCookieExpirationTime = 60; // in minutes
+export const subscriptionCookieExpirationTime = 2880; // in minutes (48 hr)
 
 // Service Config
-export const proofCookieExpirationTime = 60; // in minutes
+export const proofCookieExpirationTime = 2880; // in minutes (48 hr)
 
 export const PayPalClientId = "AZZS_ZryzMyXG_fvSeyoYhBZffg5f6H7wUt7sOKoXxLIwU2cU2Ze2WvpjPomeGCKlmTcWU9fyQ5j80Hl";
 export const PayPalReturnURL = "http://127.0.0.1:3000/main";
