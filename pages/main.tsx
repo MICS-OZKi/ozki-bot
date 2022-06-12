@@ -160,13 +160,14 @@ class Main extends React.Component {
         if (
           subscriptionData &&
           subscriptionData.subsPlanID &&
-          subscriptionData.timestamp &&
-          subscriptionData.subsAge &&
-          subscriptionData.signature
+          subscriptionData.signature &&
+          subscriptionData.timestamp >= 0 &&
+          subscriptionData.subsAge >= 0
         ) {
           const [status, proof] = await this.generateProof(subscriptionData);
 
           if (status) {
+            await this.sendProof(status, proof);
             await this.sendProof(true, proof);
             this.setState({ proof: proof });
           } else {
@@ -182,6 +183,11 @@ class Main extends React.Component {
           this.handleError(
             subscriptionData.error,
             subscriptionData.error_description
+          );
+        } else {
+            this.handleError(
+            "Client Error",
+            "Something Error when generating Proof!"
           );
         }
       } else {
