@@ -52,7 +52,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <AppBar position="relative">
           <Toolbar>
-            <Typography variant="h5" color="inherit" noWrap>
+            <Typography align="center" style={{width: "100%", alignItems: "center"}} variant="h4" color="inherit" noWrap>
               <Link href={"/"}>OZKi Game</Link>
             </Typography>
           </Toolbar>
