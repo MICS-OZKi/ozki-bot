@@ -50,10 +50,10 @@ class PayPalLoginButton extends React.Component {
 
   componentDidMount() {
     if (window.paypal && window.paypal.use) {
+      this.renderPayPalLoginButton();
       this.setState({
         paypal: true,
       });
-      this.renderPayPalLoginButton();
     }
   }
 

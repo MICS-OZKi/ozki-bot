@@ -8,11 +8,7 @@ import {
   CssBaseline,
 } from "@mui/material";
 import Router from "next/router";
-import {
-  MaximumPaymentAge,
-  OracleBasedAPIURL,
-  PayPalSubscriptionPlanId,
-} from "@/config/config";
+import { OracleBasedAPIURL, PayPalSubscriptionPlanId } from "@/config/config";
 import { sendRequestExternalAPI } from "@/utils/request";
 import Cookies from "js-cookie";
 import MainPageError from "@/components/mainPageError";
@@ -21,8 +17,6 @@ import ExitButton from "@/components/exitButton";
 interface oracleSubscriptionInputData {
   code: string;
   subscriptionID: string;
-  PlanID: string;
-  maximumPaymentAge: number;
 }
 
 interface subscriptionData {
@@ -59,14 +53,11 @@ class Main extends React.Component {
 
   getPayPalSubscriptionData = async (
     code: string,
-    subscriptionID: string,
-    maximumPaymentAge: number
+    subscriptionID: string
   ): Promise<any> => {
     const data: oracleSubscriptionInputData = {
       code: code,
       subscriptionID: subscriptionID,
-      PlanID: PayPalSubscriptionPlanId,
-      maximumPaymentAge: maximumPaymentAge,
     };
 
     return await sendRequestExternalAPI(
@@ -153,8 +144,7 @@ class Main extends React.Component {
         const subscriptionData: subscriptionData =
           await this.getPayPalSubscriptionData(
             codeToken,
-            subscriptionCookie,
-            MaximumPaymentAge
+            subscriptionCookie
           );
 
         if (

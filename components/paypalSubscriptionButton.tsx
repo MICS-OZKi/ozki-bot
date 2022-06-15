@@ -4,7 +4,7 @@ import {
   PayPalSubscriptionScriptAPI,
 } from "@/config/config";
 import { Alert, Box, Typography } from "@mui/material";
-import cookie from "js-cookie";
+import Cookies from "js-cookie";
 import Script from "next/script";
 import React from "react";
 
@@ -50,7 +50,7 @@ class PayPalSusbscriptionButton extends React.Component {
             },
             actions: { subcription: any; restart: any; redirect: any }
           ) {
-            cookie.set("subscription", data.subscriptionID, {
+            Cookies.set("subscription", data.subscriptionID, {
               expires: new Date(
                 new Date().getTime() +
                   subscriptionCookieExpirationTime * 60 * 1000
