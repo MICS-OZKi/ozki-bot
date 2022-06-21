@@ -41,3 +41,5 @@ yarn-error.log*
 #zkfiles
 public/generator/*
 public/verifier/*
+
+.vscode/

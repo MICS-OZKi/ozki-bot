@@ -2953,7 +2953,7 @@
     "word-wrap" "^1.2.3"
 
 "ozki-lib@file:../ozki-toolkit/ozki-lib-1.0.0.tgz":
-  "integrity" "sha512-XwVa2Q3h5h2IUhUwMqKfDeL5wCFkn6H0gB22/WvMHJu4CbRefvlLTmaU18VTD3AWGMyt8zTdzniBm9HwUQA71Q=="
+  "integrity" "sha512-ifwPeapV0qBoxAbUiX3c0i3UxA4EdFyfRMpljejZPvqWNHvaaAef2MkdGKljn/dGLF/n3OkjQyLmMX0k7W/GDA=="
   "resolved" "file:../ozki-toolkit/ozki-lib-1.0.0.tgz"
   "version" "1.0.0"
   dependencies:
