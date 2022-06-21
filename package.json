@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "npm remove myProj && rm -rf node_modules && rm -rf package-lock.json",
-    "refresh": "npm run clean && npm i ../ozki-toolkit/ozki-lib-1.0.0.tgz"
+    "refresh": "npm run clean && npm install ../ozki-toolkit/ozki-lib-1.0.0.tgz"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
