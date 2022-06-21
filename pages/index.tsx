@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/inline-script-id */
 import React from "react";
 
-import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import PayPalSusbscriptionButton from "@/components/paypalSubscriptionButton";
 import TextFieldBillingId from "@/components/textFieldBillingId";
 import Cookies from "js-cookie";
 import EnterButton from "@/components/enterButton";

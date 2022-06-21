@@ -5,8 +5,13 @@ import React from "react";
 import Cookies from "js-cookie";
 import Router from "next/router";
 
-class ExitButton extends React.Component {
+interface ExitButtonProps {
+  setIsExitButton: (isExitButton: boolean) => void;
+}
+
+class ExitButton extends React.Component<ExitButtonProps> {
   clearCookies = () => {
+    //this.props.setIsExitButton(false);
     if (Cookies.get("proof")) {
       Cookies.remove("proof");
     }
@@ -21,13 +26,17 @@ class ExitButton extends React.Component {
         <Grid container justifyContent="center">
           <Grid item>
             <Button
-              variant="outlined"
+              variant="contained"
+              color="primary"
+              style={{
+                border: "1px solid",
+                borderColor: "white",
+              }}
               startIcon={<ExitToAppIcon />}
               onClick={this.clearCookies}
               size="large"
-              style={{ marginTop: 5 }}
             >
-              {"Exit Game"}
+              {"Exit"}
             </Button>
           </Grid>
         </Grid>

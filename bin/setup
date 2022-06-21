@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+echo "Installing dependencies..."
+npm install
+
+echo "Copy Configuration..."
+cp config/config.example.ts config/config.ts
+
+echo "Generating public generator folder..."
+mkdir public/generator
+
+echo "Generating public verifier folder..."
+mkdir public/verifier

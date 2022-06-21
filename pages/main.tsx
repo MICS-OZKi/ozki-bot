@@ -8,11 +8,16 @@ import {
   CssBaseline,
 } from "@mui/material";
 import Router from "next/router";
-import { OracleBasedAPIURL, PayPalSubscriptionPlanId } from "@/config/config";
+import {
+  OracleBasedAPIURL,
+  PayPalSubscriptionPlanId,
+  proofFileName,
+} from "@/config/config";
 import { sendRequestExternalAPI } from "@/utils/request";
 import Cookies from "js-cookie";
 import MainPageError from "@/components/mainPageError";
 import ExitButton from "@/components/exitButton";
+import { Generator } from "ozki-lib/dist/proof-generator/src";
 
 interface oracleSubscriptionInputData {
   code: string;
@@ -23,12 +28,16 @@ interface subscriptionData {
   subsPlanID: string;
   timestamp: number;
   subsAge: number;
-  signature: string;
+  signature: Array<any>;
   error?: string;
   error_description?: string;
 }
 
-class Main extends React.Component {
+interface ComponentProps {
+  setIsExitButton: (isExitButton: boolean) => void;
+}
+
+class Main extends React.Component<ComponentProps> {
   state = {
     errorTitle: "",
     errorDescription: "",
@@ -42,12 +51,14 @@ class Main extends React.Component {
   handleError = (
     errorTitle: string,
     errorDescription: string,
-    severity: AlertColor = "error"
+    severity: AlertColor = "error",
+    showReLoginButtonError: boolean = true
   ): void => {
     this.setState({
       errorTitle: errorTitle,
       errorDescription: errorDescription,
       severity: severity,
+      showReLoginButtonError: showReLoginButtonError,
     });
   };
 
@@ -75,37 +86,54 @@ class Main extends React.Component {
         this.setState({
           subscription: JSON.stringify(response, null, 4),
         });
+        this.props.setIsExitButton(true);
 
         return response;
       })
       .catch((error) => {
-        this.setState({
-          showReLoginButtonError: false,
-        });
+        this.setState({ showReLoginButtonError: false });
         return error;
       });
   };
 
   private generateProof = async (subscriptionData: subscriptionData) => {
-    // TODO: generate Proof to portal services
+    //this.showMessage(`Generating Proof....`);
     if (subscriptionData.subsPlanID === PayPalSubscriptionPlanId) {
-      return [true, "This is a dummy proof"] as const;
+      console.log("calling generator.generatorProof");
+      const generator = new Generator();
+      const [proof, publicSignals] = await generator.generateProof(
+        Uint8Array.from(subscriptionData.signature),
+        subscriptionData.subsPlanID,
+        subscriptionData.subsAge,
+        subscriptionData.timestamp,
+        `../generator/${proofFileName}.wasm`,
+        `../generator/${proofFileName}_0001.zkey`
+      );
+
+      if (proof && publicSignals) {
+        return [true, proof, publicSignals] as const;
+      }
     }
-    return [false, ""] as const;
+    return [false, "", ""] as const;
   };
 
-  private sendProof = async (status: boolean, proof: string): Promise<void> => {
-    fetch("/api/SendProof", {
+  private verifyProofOfPayment = async (
+    status: boolean,
+    proof: any,
+    signal: any
+  ): Promise<void> => {
+    //this.showMessage(`Completed`);
+    fetch("/api/VerifyProofOfPayment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status: status, proof: proof }),
+      body: JSON.stringify({ status: status, proof: proof, signal: signal }),
     }).catch((error) => {
       console.log(error);
       throw error;
     });
-    this.showMessage(`Completed`);
+    //this.showMessage(`Completed`);
   };
 
   private showMessage = (text: string) => {
@@ -124,7 +152,7 @@ class Main extends React.Component {
 
   async componentDidMount() {
     this.setState({ isLoading: true });
-    this.showMessage(`Processing...`);
+    //this.showMessage(`Processing...`);
 
     const proofCookie = Cookies.get("proof");
     const subscriptionCookie = Cookies.get("subscription");
@@ -134,18 +162,15 @@ class Main extends React.Component {
     }
 
     if (!proofCookie && subscriptionCookie) {
-      this.showMessage(`Retrieving proof of payment...`);
-
       const windowUrl = window.location.search;
       const params = new URLSearchParams(windowUrl);
       const codeToken = params.get("code");
 
       if (codeToken) {
+        console.log("**** PayPal's code token found");
+        console.log("**** calling oracle's GetSubscriptionInfo api...")
         const subscriptionData: subscriptionData =
-          await this.getPayPalSubscriptionData(
-            codeToken,
-            subscriptionCookie
-          );
+          await this.getPayPalSubscriptionData(codeToken, subscriptionCookie);
 
         if (
           subscriptionData &&
@@ -154,16 +179,22 @@ class Main extends React.Component {
           subscriptionData.timestamp >= 0 &&
           subscriptionData.subsAge >= 0
         ) {
-          const [status, proof] = await this.generateProof(subscriptionData);
+          console.log("**** generating proof...")
+          const [status, proof, signal] = await this.generateProof(
+            subscriptionData
+          );
 
           if (status) {
-            await this.sendProof(status, proof);
-            await this.sendProof(true, proof);
-            this.setState({ proof: proof });
+            console.log("**** calling portal's VerifyProofOfPayment api...")
+            await this.verifyProofOfPayment(status, proof, signal);
+            this.setState({ proof: JSON.stringify(proof, null, 4) });
+            console.log("**** proof processing completed")
           } else {
             this.handleError(
               "Proof Generator Error",
-              "Payment record did not satisfy requirements"
+              "Payment record did not satisfy requirements",
+              "error",
+              false
             );
           }
         } else if (
@@ -175,18 +206,20 @@ class Main extends React.Component {
             subscriptionData.error_description
           );
         } else {
-            this.handleError(
+          this.handleError(
             "Client Error",
             "Something Error when generating Proof!"
           );
         }
       } else {
+        console.log("**** no PayPal's code token found");
         this.handleError("Client Error", "Code Token is not found!");
       }
     } else if (proofCookie) {
-      this.showMessage(`Proof of payment verified`);
+      //this.showMessage(`Proof of payment verified`);
+      const proofCookieJson = JSON.parse(proofCookie);
       this.setState({
-        proof: proofCookie,
+        proof: JSON.stringify(proofCookieJson, null, 4),
       });
     } else {
       this.redirectToMain();
@@ -205,7 +238,6 @@ class Main extends React.Component {
       >
         <CssBaseline />
         <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
-          <h1>Status</h1>
           <div id="output" />
           <hr />
           {this.state.errorTitle !== "" ? (
@@ -223,13 +255,13 @@ class Main extends React.Component {
                 </Box>
               ) : (
                 <>
-                  {
+        				{
                     <>
-                      <h1>OZKi Game Page</h1>
+                          <h1>OZKi Game Page</h1>
 			<Image src="/static/ozki-logo.png" width="260px" height="200px" />
                     </>
-                  }
-                  <ExitButton />
+                }
+		<ExitButton />
                 </>
               )}
             </>

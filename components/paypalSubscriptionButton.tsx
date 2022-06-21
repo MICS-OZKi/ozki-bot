@@ -2,6 +2,7 @@ import {
   PayPalSubscriptionPlanId,
   subscriptionCookieExpirationTime,
   PayPalSubscriptionScriptAPI,
+  ServiceHomePageURL,
 } from "@/config/config";
 import { Alert, Box, Typography } from "@mui/material";
 import Cookies from "js-cookie";
@@ -56,7 +57,7 @@ class PayPalSusbscriptionButton extends React.Component {
                   subscriptionCookieExpirationTime * 60 * 1000
               ),
             });
-            actions.redirect.fireAndForget("http://127.0.0.1:3000/login");
+            actions.redirect.fireAndForget(`${ServiceHomePageURL}/login`);
           },
         })
         .render(`#paypal-button-container-${PayPalSubscriptionPlanId}`);
@@ -71,10 +72,10 @@ class PayPalSusbscriptionButton extends React.Component {
 
   componentDidMount() {
     if (window.paypal && window.paypal.Buttons) {
+      this.renderPayPalSubscriptionButton();
       this.setState({
         paypal: true,
       });
-      this.renderPayPalSubscriptionButton();
     }
   }
 

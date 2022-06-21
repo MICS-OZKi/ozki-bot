@@ -1,8 +1,9 @@
 // Client Cookie Config
-export const subscriptionCookieExpirationTime = 2880; // in minutes (48 hr)
+export const subscriptionCookieExpirationTime = 60; // in minutes
+export const ServiceHomePageURL = "http://127.0.0.1:3000/";
 
 // Service Config
-export const proofCookieExpirationTime = 2880; // in minutes (48 hr)
+export const proofCookieExpirationTime = 60; // in minutes
 
 export const PayPalClientId = "AZZS_ZryzMyXG_fvSeyoYhBZffg5f6H7wUt7sOKoXxLIwU2cU2Ze2WvpjPomeGCKlmTcWU9fyQ5j80Hl";
 export const PayPalReturnURL = "http://127.0.0.1:3000/main";
@@ -17,3 +18,6 @@ export const PayPalSubscriptionPlanId = "P-1BF08962SE3742350MKRYCVQ";
 export const PayPalScriptAPI =
   "https://www.paypalobjects.com/js/external/api.js";
 export const PayPalSubscriptionScriptAPI = "https://www.paypal.com/sdk/js?client-id=AZZS_ZryzMyXG_fvSeyoYhBZffg5f6H7wUt7sOKoXxLIwU2cU2Ze2WvpjPomeGCKlmTcWU9fyQ5j80Hl&vault=true&intent=subscription"; 
+
+export const proofMaxAge = 5;
+export const proofFileName="ProvePayPalSubscriptionMain";

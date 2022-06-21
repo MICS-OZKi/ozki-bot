@@ -33,3 +33,11 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# config file
+/config/config.ts
+
+
+#zkfiles
+public/generator/*
+public/verifier/*
