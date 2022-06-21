@@ -18,6 +18,7 @@ import Cookies from "js-cookie";
 import MainPageError from "@/components/mainPageError";
 import ExitButton from "@/components/exitButton";
 import { Generator } from "ozki-lib/dist/proof-generator/src";
+import { errorCode } from "@/config/code";
 
 interface oracleSubscriptionInputData {
   code: string;
@@ -83,11 +84,6 @@ class Main extends React.Component<ComponentProps> {
           this.handleError(response.error, response.error_description);
         }
 
-        this.setState({
-          subscription: JSON.stringify(response, null, 4),
-        });
-        this.props.setIsExitButton(true);
-
         return response;
       })
       .catch((error) => {
@@ -121,19 +117,33 @@ class Main extends React.Component<ComponentProps> {
     status: boolean,
     proof: any,
     signal: any
-  ): Promise<void> => {
+  ): Promise<boolean> => {
     //this.showMessage(`Completed`);
-    fetch("/api/VerifyProofOfPayment", {
+    return await fetch("/api/VerifyProofOfPayment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ status: status, proof: proof, signal: signal }),
-    }).catch((error) => {
+      })
+    .then((result) => {
+      if (result.status === errorCode.VERIFICATION_FAILED) {
+        this.handleError(
+          "Proof Verifier Error",
+          "The subscription proof failed the verification process",
+          "error",
+          false
+        );
+        return false;
+      } else {
+        //this.showMessage(`Process done, proof cookie was created....`);
+        return true;
+      }
+    })
+    .catch((error) => {
       console.log(error);
-      throw error;
+      return false;
     });
-    //this.showMessage(`Completed`);
   };
 
   private showMessage = (text: string) => {
@@ -186,8 +196,18 @@ class Main extends React.Component<ComponentProps> {
 
           if (status) {
             console.log("**** calling portal's VerifyProofOfPayment api...")
-            await this.verifyProofOfPayment(status, proof, signal);
-            this.setState({ proof: JSON.stringify(proof, null, 4) });
+            const isGeneratedCookie = await this.verifyProofOfPayment(
+              status,
+              proof,
+              signal
+            );
+            if (isGeneratedCookie) {
+              this.setState({
+                subscription: JSON.stringify(subscriptionData, null, 4),
+                proof: JSON.stringify(proof, null, 4),
+              });
+            }
+            this.props.setIsExitButton(true);
             console.log("**** proof processing completed")
           } else {
             this.handleError(

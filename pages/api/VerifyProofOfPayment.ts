@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { serialize } from "cookie";
 import { proofCookieExpirationTime } from "@/config/config";
 import serverPath from "@/utils/helper";
-import { verifier } from "ozki-lib";
+import { Verifier } from "ozki-lib/dist/proof-verifier/src";
 
 type Data = {
   success: boolean;
@@ -19,6 +19,7 @@ const validateProof = async (status: boolean, proof: any, signal: any) => {
     const verificationKeyFilePath = serverPath(
       "public/verifier/verification_key.json"
     );
+    const verifier = new Verifier();
     try {
       const result = await verifier.verifyProof(
         proof,
@@ -60,12 +61,12 @@ export default async function handler(
         }),
       ]);
       res.statusCode = 200;
-      res.json({
+      res.send({
         success: true,
       });
     } else {
       res.statusCode = 400;
-      res.json({
+      res.send({
         success: false,
       });
     }
