@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { serialize } from "cookie";
-import { proofCookieExpirationTime } from "@/config/config";
+import { proofCookieExpirationTime, proofFileName } from "@/config/config";
 import serverPath from "@/utils/helper";
 import { Verifier } from "ozki-lib/dist/proof-verifier/src";
 
@@ -16,15 +16,16 @@ const validateProof = async (status: boolean, proof: any, signal: any) => {
   console.log("Output:");
   console.log(signal);
   if (status) {
-    const verificationKeyFilePath = serverPath(
-      "public/verifier/verification_key.json"
+    const FilePath = serverPath(
+      "public/verifier/"
     );
     const verifier = new Verifier();
     try {
       const result = await verifier.verifyProof(
+        FilePath,
+        proofFileName,
         proof,
-        signal,
-        verificationKeyFilePath
+        signal
       );
       return result;
     } catch (error) {

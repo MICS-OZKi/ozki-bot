@@ -17,8 +17,9 @@ import { sendRequestExternalAPI } from "@/utils/request";
 import Cookies from "js-cookie";
 import MainPageError from "@/components/mainPageError";
 import ExitButton from "@/components/exitButton";
-import { Generator } from "ozki-lib/dist/proof-generator/src";
+import { generator } from "ozki-lib/dist/proof-generator/src";
 import { errorCode } from "@/config/code";
+import { ZkUtils } from "ozki-lib/dist/common/src";
 
 interface oracleSubscriptionInputData {
   code: string;
@@ -32,6 +33,11 @@ interface subscriptionData {
   signature: Array<any>;
   error?: string;
   error_description?: string;
+}
+
+interface inputPayPalObject {
+  payment_subs_id: number[]; // payment plan id
+  pa: number[];
 }
 
 interface ComponentProps {
@@ -94,16 +100,21 @@ class Main extends React.Component<ComponentProps> {
 
   private generateProof = async (subscriptionData: subscriptionData) => {
     //this.showMessage(`Generating Proof....`);
+    let zkutils = new ZkUtils();
     if (subscriptionData.subsPlanID === PayPalSubscriptionPlanId) {
-      console.log("calling generator.generatorProof");
-      const generator = new Generator();
+      const inputObject: inputPayPalObject = {
+        payment_subs_id: zkutils.stringToBytes(subscriptionData.subsPlanID), // payment plan id
+        pa: zkutils.numberToBytes(subscriptionData.subsAge, 4),
+      };
+
+      console.log("calling generator.generatorProof: %s", proofFileName);
+      console.log("2 calling generator.generatorProof: %s", proofFileName);
       const [proof, publicSignals] = await generator.generateProof(
+        "../generator/",
+        proofFileName,
         Uint8Array.from(subscriptionData.signature),
-        subscriptionData.subsPlanID,
-        subscriptionData.subsAge,
         subscriptionData.timestamp,
-        `../generator/${proofFileName}.wasm`,
-        `../generator/${proofFileName}_0001.zkey`
+        inputObject
       );
 
       if (proof && publicSignals) {

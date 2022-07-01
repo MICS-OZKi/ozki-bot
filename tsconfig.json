@@ -17,11 +17,12 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["components/*"],
+      "@/pages/*": ["pages/*"],
       "@/config/*": ["config/*"],
       "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"]
     } 
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "__mocks__/workerMock.js"],
   "exclude": ["node_modules"]
 }
