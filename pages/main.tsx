@@ -17,27 +17,12 @@ import { sendRequestExternalAPI } from "@/utils/request";
 import Cookies from "js-cookie";
 import MainPageError from "@/components/mainPageError";
 import ExitButton from "@/components/exitButton";
-import { generator } from "ozki-lib/dist/proof-generator/src";
 import { errorCode } from "@/config/code";
-import { ZkUtils } from "ozki-lib/dist/common/src";
+import { ProofOfPaymentGenerator, SubscriptionData, InputPayPalObject } from "./ProofOfPaymentGenerator";
 
 interface oracleSubscriptionInputData {
   code: string;
   subscriptionID: string;
-}
-
-interface subscriptionData {
-  subsPlanID: string;
-  timestamp: number;
-  subsAge: number;
-  signature: Array<any>;
-  error?: string;
-  error_description?: string;
-}
-
-interface inputPayPalObject {
-  payment_subs_id: number[]; // payment plan id
-  pa: number[];
 }
 
 interface ComponentProps {
@@ -98,23 +83,17 @@ class Main extends React.Component<ComponentProps> {
       });
   };
 
-  private generateProof = async (subscriptionData: subscriptionData) => {
+  private generateProof = async (subscriptionData: SubscriptionData) => {
     //this.showMessage(`Generating Proof....`);
-    let zkutils = new ZkUtils();
     if (subscriptionData.subsPlanID === PayPalSubscriptionPlanId) {
-      const inputObject: inputPayPalObject = {
-        payment_subs_id: zkutils.stringToBytes(subscriptionData.subsPlanID), // payment plan id
-        pa: zkutils.numberToBytes(subscriptionData.subsAge, 4),
-      };
-
       console.log("calling generator.generatorProof: %s", proofFileName);
       console.log("2 calling generator.generatorProof: %s", proofFileName);
+      const generator = new ProofOfPaymentGenerator(subscriptionData);
       const [proof, publicSignals] = await generator.generateProof(
         "../generator/",
         proofFileName,
         Uint8Array.from(subscriptionData.signature),
-        subscriptionData.timestamp,
-        inputObject
+        subscriptionData.timestamp
       );
 
       if (proof && publicSignals) {
@@ -190,7 +169,7 @@ class Main extends React.Component<ComponentProps> {
       if (codeToken) {
         console.log("**** PayPal's code token found");
         console.log("**** calling oracle's GetSubscriptionInfo api...")
-        const subscriptionData: subscriptionData =
+        const subscriptionData: SubscriptionData =
           await this.getPayPalSubscriptionData(codeToken, subscriptionCookie);
 
         if (
