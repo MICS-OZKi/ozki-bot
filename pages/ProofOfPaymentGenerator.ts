@@ -10,26 +10,26 @@ export interface SubscriptionData {
   error_description?:   string;
 }
 
-export interface InputPayPalObject {
+interface InputPayPalObject {
     payment_subs_id:    number[]; // payment plan id
     pa:                 number[];
 }
 
-export class ProofOfPaymentGenerator extends ProofGenerator {
-    private subsData: SubscriptionData;
-
-    constructor(subsData: SubscriptionData) {
-        console.log("#### ProofOfPaymentGenerator ctor");
-        super();
-        this.subsData = subsData;
+export class ProofOfPaymentGenerator extends ProofGenerator<SubscriptionData> {
+    constructor(
+        zkpComponentPath: string,
+        zkpComponentName: string
+        ) {
+        console.log("#### ProofOfPaymentGenerator.ctor");
+        super(zkpComponentPath, zkpComponentName);
     }
 
-    protected getCustomInput(): any {
-        console.log("#### getCustomInput");
+    protected formatCustomInput(subsData: SubscriptionData): any {
+        console.log("#### ProofOfPaymentGenerator.formatCustomInput");
         const zkutils = new ZkUtils();
         let input: InputPayPalObject = {
-            payment_subs_id: zkutils.stringToBytes(this.subsData.subsPlanID), // payment plan id
-            pa: zkutils.numberToBytes(this.subsData.subsAge, 4),
+            payment_subs_id: zkutils.stringToBytes(subsData.subsPlanID), // payment plan id
+            pa: zkutils.numberToBytes(subsData.subsAge, 4),
         };
 
         return input;

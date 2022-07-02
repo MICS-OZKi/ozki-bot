@@ -87,13 +87,11 @@ class Main extends React.Component<ComponentProps> {
     //this.showMessage(`Generating Proof....`);
     if (subscriptionData.subsPlanID === PayPalSubscriptionPlanId) {
       console.log("calling generator.generatorProof: %s", proofFileName);
-      console.log("2 calling generator.generatorProof: %s", proofFileName);
-      const generator = new ProofOfPaymentGenerator(subscriptionData);
+      const generator = new ProofOfPaymentGenerator("../generator/", proofFileName, subscriptionData);
       const [proof, publicSignals] = await generator.generateProof(
-        "../generator/",
-        proofFileName,
         Uint8Array.from(subscriptionData.signature),
-        subscriptionData.timestamp
+        subscriptionData.timestamp,
+        subscriptionData
       );
 
       if (proof && publicSignals) {
