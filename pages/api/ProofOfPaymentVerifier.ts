@@ -1,5 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import  ProofVerifier from "ozki-lib";
+import  ProofVerifier from "ozki-lib/dist/proof-verifier/src/ProofVerifier";
 
 export default class ProofOfPaymentVerifier extends ProofVerifier<void> {
     constructor(
