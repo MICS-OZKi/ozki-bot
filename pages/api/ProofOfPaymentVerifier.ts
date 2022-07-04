@@ -1,4 +1,4 @@
-import  ProofVerifier from "ozki-lib/dist/proof-verifier/src/ProofVerifier";
+import  ProofVerifier from "ozki-lib";
 
 export default class ProofOfPaymentVerifier extends ProofVerifier<void> {
     constructor(
