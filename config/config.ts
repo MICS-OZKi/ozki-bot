@@ -19,5 +19,5 @@ export const PayPalScriptAPI =
   "https://www.paypalobjects.com/js/external/api.js";
 export const PayPalSubscriptionScriptAPI = "https://www.paypal.com/sdk/js?client-id=AZZS_ZryzMyXG_fvSeyoYhBZffg5f6H7wUt7sOKoXxLIwU2cU2Ze2WvpjPomeGCKlmTcWU9fyQ5j80Hl&vault=true&intent=subscription"; 
 
-export const proofMaxAge = 5;
+export const proofMaxAge = 2;
 export const proofFileName="ProvePayPalSubscriptionMain";

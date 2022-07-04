@@ -24,14 +24,16 @@ export class ProofOfPaymentGenerator extends ProofGenerator<SubscriptionData> {
         super(zkpComponentPath, zkpComponentName);
     }
 
-    protected formatCustomInput(subsData: SubscriptionData): any {
-        console.log("#### ProofOfPaymentGenerator.formatCustomInput");
+    protected formatCustomInput(subsData: SubscriptionData): object {
+        console.log("#### >>ProofOfPaymentGenerator.formatCustomInput");
+        console.log("subsPlanId=%s, subsAge=%d", subsData.subsPlanID, subsData.subsAge);
         const zkutils = new ZkUtils();
         let input: InputPayPalObject = {
             payment_subs_id: zkutils.stringToBytes(subsData.subsPlanID), // payment plan id
             pa: zkutils.numberToBytes(subsData.subsAge, 4),
         };
 
+        console.log("#### <<ProofOfPaymentGenerator.formatCustomInput");
         return input;
     }    
 }
