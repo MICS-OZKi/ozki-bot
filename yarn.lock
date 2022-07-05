@@ -4483,10 +4483,10 @@
     "type-check" "^0.4.0"
     "word-wrap" "^1.2.3"
 
-"ozki-lib@file:../ozki-toolkit/ozki-lib-1.1.7.tgz":
-  "integrity" "sha512-wafvNzs+SCH5coNhZiNMFwXYUV3Aj9RX5fAxwI0MWq6annMhNy8qvEe1GIC6o/viFQQOIAtMPib21d9jqLQyWg=="
-  "resolved" "file:../ozki-toolkit/ozki-lib-1.1.7.tgz"
-  "version" "1.1.7"
+"ozki-lib@file:../ozki-toolkit/ozki-lib-1.1.27.tgz":
+  "integrity" "sha512-uIaNFSDEjD9l6Y2yE+N0TMTUBlB0MM1Db/FZ1CrujlX3Nv/ddldIcbiP/e6aEzXTc3S+xqHJtpYhkU6yTPQ3GQ=="
+  "resolved" "file:../ozki-toolkit/ozki-lib-1.1.27.tgz"
+  "version" "1.1.27"
   dependencies:
     "chai" "^4.3.6"
     "circomlibjs" "^0.1.2"
