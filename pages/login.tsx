@@ -28,14 +28,7 @@ class Login extends React.Component {
           alignItems: "center",
         }}
       >
-             <Typography variant="h7" textAlign="center">
-          <Box
-            sx={{ fontWeight: "medium", m: 1 }}
-          >{`Get proof of payment for billing-id: ${this.state.subscriptionCookie}`}</Box>
-
-        </Typography>
-
-        <PayPalLoginButton />
+        <PayPalLoginButton subscriptionCookie={this.state.subscriptionCookie} />
       </Box>
     );
   }

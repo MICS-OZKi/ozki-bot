@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import TextFieldBillingId from "@/components/textFieldBillingId";
 import Cookies from "js-cookie";
 import EnterButton from "@/components/enterButton";
+// import GoogleLoginButton from "@/components/googleLoginButton";
 // import SubscriptionInfoBox from "@/components/subscriptionInfoBox";
 
 class Home extends React.Component {
@@ -46,6 +47,7 @@ class Home extends React.Component {
               )} */}
 
             <TextFieldBillingId />
+              {/* <GoogleLoginButton /> */}
           </>
         )}
       </Box>

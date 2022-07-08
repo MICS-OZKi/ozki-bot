@@ -262,15 +262,10 @@ class Main extends React.Component<ComponentProps> {
                   <CircularProgress />
                 </Box>
               ) : (
-                <>
-        				{
                     <>
-                          <h1>OZKi Game Page</h1>
 			<Image src="/static/ozki-logo.png" width="260px" height="200px" />
+			<ExitButton />
                     </>
-                }
-		<ExitButton />
-                </>
               )}
             </>
           )}

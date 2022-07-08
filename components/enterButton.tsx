@@ -13,7 +13,7 @@ class EnterButton extends React.Component {
           width: 380,
           boxShadow: 3,
           p: 2,
-          backgroundColor: "primary.white",
+          backgroundColor: "rgba(0, 0, 0, 0.87)",
         }}
       >
         <Typography

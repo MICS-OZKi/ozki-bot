@@ -50,7 +50,7 @@ class TextFieldBillingId extends React.Component {
           width: 300,
           boxShadow: 3,
           p: 2,
-          backgroundColor: "primary.white",
+          backgroundColor: "rgba(0, 0, 0, 0.87)",
         }}
       >
         <Grid container spacing={1} textAlign="center">

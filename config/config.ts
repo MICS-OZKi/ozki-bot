@@ -1,6 +1,7 @@
 // Client Cookie Config
 export const subscriptionCookieExpirationTime = 60; // in minutes
 export const ServiceHomePageURL = "http://127.0.0.1:3000/";
+export const VKLBasedURL = "http://127.0.0.1:3000/";
 
 // Service Config
 export const proofCookieExpirationTime = 60; // in minutes
@@ -19,5 +20,14 @@ export const PayPalScriptAPI =
   "https://www.paypalobjects.com/js/external/api.js";
 export const PayPalSubscriptionScriptAPI = "https://www.paypal.com/sdk/js?client-id=AZZS_ZryzMyXG_fvSeyoYhBZffg5f6H7wUt7sOKoXxLIwU2cU2Ze2WvpjPomeGCKlmTcWU9fyQ5j80Hl&vault=true&intent=subscription"; 
 
-export const proofMaxAge = 2;
+export const proofMaxAge = 5;
 export const proofFileName="ProvePayPalSubscriptionMain";
+export const payPalProofFileName="ProvePayPalSubscriptionMain";
+
+// Interface Config
+export const backgroundImage = "/background.jpeg";
+
+// Google Config
+export const googleClientID = "16403292172-pvsrdogb25iqmfe5lncnqqmu1t82mj46.apps.googleusercontent.com"
+export const googleProofFileName = "ProveGoogleAuth";
+
