@@ -1,15 +1,25 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { serialize } from "cookie";
-import { proofCookieExpirationTime, proofFileName } from "@/config/config";
+import {
+  proofCookieExpirationTime,
+  payPalProofFileName,
+  googleProofFileName,
+} from "@/config/config";
 import serverPath from "@/utils/helper";
 import ProofOfPaymentVerifier from "./ProofOfPaymentVerifier";
+import ProofOfLoginVerifier from "./ProofOfLoginVerifier";
 
 type Data = {
   success: boolean;
 };
 
-const validateProof = async (status: boolean, proof: any, signal: any) => {
+const validateProof = async (
+  status: boolean,
+  proof: any,
+  signal: any,
+  type: string
+) => {
   // check the status if status true set the cookie
   console.log("Proof:");
   console.log(proof);
@@ -17,12 +27,26 @@ const validateProof = async (status: boolean, proof: any, signal: any) => {
   console.log(signal);
   if (status) {
     const filePath = serverPath("public/verifier/");
-    const verifier = new ProofOfPaymentVerifier(filePath, proofFileName);
-    try {
-      await verifier.verifyProof(proof, signal);
-      return true;
-    } catch (error) {
-      return false;
+    if (type === "subscription") {
+      try {
+        const verifier = new ProofOfPaymentVerifier(filePath, payPalProofFileName);
+        await verifier.verifyProof(proof, signal);
+        return true;
+      }
+      catch (error) {
+        return false;
+      }
+    }
+    else {
+      try {
+        const verifier = new ProofOfLoginVerifier(filePath, googleProofFileName);
+        await verifier.verifyProof(proof, signal);
+        return true;
+      }
+      catch (error) {
+        return false;
+      }
+
     }
   }
   return false;
@@ -43,7 +67,8 @@ export default async function handler(
     const validatedProof = await validateProof(
       req.body.status,
       req.body.proof,
-      req.body.signal
+      req.body.signal,
+      req.body.type
     );
     if (validatedProof) {
       res.setHeader("Set-Cookie", [

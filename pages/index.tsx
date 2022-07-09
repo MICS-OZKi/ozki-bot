@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import TextFieldBillingId from "@/components/textFieldBillingId";
 import Cookies from "js-cookie";
 import EnterButton from "@/components/enterButton";
-// import GoogleLoginButton from "@/components/googleLoginButton";
 // import SubscriptionInfoBox from "@/components/subscriptionInfoBox";
 
 class Home extends React.Component {
@@ -25,19 +24,19 @@ class Home extends React.Component {
 
   render() {
     return (
-      <Box
-        sx={{
-          marginTop: 8,
-          marginBottom: 3,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+        <>
         {this.state.proofCookie ? (
           <EnterButton />
         ) : (
-          <>
+          <Box
+            sx={{
+              marginTop: 8,
+              marginBottom: 3,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             {/* {this.state.subscriptionCookie ? (
                 <SubscriptionInfoBox
                   subscriptionID={this.state.subscriptionCookie}
@@ -47,10 +46,9 @@ class Home extends React.Component {
               )} */}
 
             <TextFieldBillingId />
-              {/* <GoogleLoginButton /> */}
-          </>
+          </Box>
         )}
-      </Box>
+      </>
     );
   }
 }

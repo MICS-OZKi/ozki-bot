@@ -1,5 +1,5 @@
-import PayPalLoginButton from "@/components/paypalLoginButton";
-import { Box, Typography } from "@mui/material";
+import PayPalLoginButton from "@/components/PayPal/paypalLoginButton";
+import { Box } from "@mui/material";
 import Cookies from "js-cookie";
 import Router from "next/router";
 import React from "react";

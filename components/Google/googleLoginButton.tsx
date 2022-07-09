@@ -20,6 +20,7 @@ class GoogleLoginButton extends React.Component {
   }
 
   renderLoginButton = () => {
+    console.log(window.google);
     try {
       window.google.accounts.id.initialize({
         client_id: googleClientID,
@@ -74,6 +75,7 @@ class GoogleLoginButton extends React.Component {
             width: 300,
             boxShadow: 3,
             p: 2,
+            marginTop: 5,
             backgroundColor: "rgba(0, 0, 0, 0.87)",
           }}
           justifyContent="center"

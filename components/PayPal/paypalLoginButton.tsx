@@ -86,12 +86,11 @@ class PayPalLoginButton extends React.Component<PayPalLoginButtonProps> {
           justifyContent="center"
         >
             <Typography variant="h3" textAlign="center">
-            {`Login with PayPal`}
           </Typography>
           <Typography variant="h6" textAlign="center">
             <Box
               sx={{ fontWeight: "light", m: 1 }}
-            >{`Get Proof of Subscription ID :`}</Box>
+            >{`Get Proof of Payment for Billing-Id:`}</Box>
             <Box
               sx={{ fontWeight: "bold", m: 1 }}
             >{`${this.props.subscriptionCookie}`}</Box>

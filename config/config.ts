@@ -29,5 +29,5 @@ export const backgroundImage = "/background.jpeg";
 
 // Google Config
 export const googleClientID = "16403292172-pvsrdogb25iqmfe5lncnqqmu1t82mj46.apps.googleusercontent.com"
-export const googleProofFileName = "ProveGoogleAuth";
+export const googleProofFileName = "ProveGoogleAuthMain";
 

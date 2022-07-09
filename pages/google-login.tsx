@@ -1,14 +1,16 @@
-import EnterButton from "@/components/enterButton";
-import PayPalSusbscriptionButton from "@/components/PayPal/paypalSubscriptionButton";
-import { Box } from "@mui/material";
-import Cookies from "js-cookie";
 import React from "react";
 
-class Subscription extends React.Component {
+import { Box } from "@mui/material";
+import GoogleLoginButton from "@/components/Google/googleLoginButton";
+import Cookies from "js-cookie";
+import EnterButton from "@/components/enterButton";
+
+class GoogleLogin extends React.Component {
   state = {
     proofCookie: "",
     subscriptionCookie: "",
   };
+
   componentDidMount() {
     const proofCookie = Cookies.get("proof");
     const subscriptionCookie = Cookies.get("subscription");
@@ -21,23 +23,27 @@ class Subscription extends React.Component {
 
   render() {
     return (
-      <Box
-        sx={{
-          marginTop: 8,
-          marginBottom: 3,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      <>
         {this.state.proofCookie ? (
           <EnterButton />
         ) : (
-          <PayPalSusbscriptionButton />
+          <>
+            <Box
+              sx={{
+                marginTop: 8,
+                marginBottom: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <GoogleLoginButton />
+            </Box>
+          </>
         )}
-      </Box>
+      </>
     );
   }
 }
 
-export default Subscription;
+export default GoogleLogin;

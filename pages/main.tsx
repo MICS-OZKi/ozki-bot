@@ -11,18 +11,36 @@ import Router from "next/router";
 import {
   OracleBasedAPIURL,
   PayPalSubscriptionPlanId,
-  proofFileName,
+  payPalProofFileName,
+  googleProofFileName,
 } from "@/config/config";
 import { sendRequestExternalAPI } from "@/utils/request";
 import Cookies from "js-cookie";
 import MainPageError from "@/components/mainPageError";
-import ExitButton from "@/components/exitButton";
+import ExitButton from "@/components/Header/exitButton";
 import { errorCode } from "@/config/code";
-import { ProofOfPaymentGenerator, SubscriptionData, InputPayPalObject } from "./ProofOfPaymentGenerator";
+import { ProofOfPaymentGenerator, SubscriptionData } from "./ProofOfPaymentGenerator";
+import { ProofOfLoginGenerator, LoginInfo } from "./ProofOfLoginGenerator";
 
 interface oracleSubscriptionInputData {
   code: string;
   subscriptionID: string;
+}
+
+interface oracleGoogleInputData {
+  googleCodeToken: string;
+}
+
+interface googleData {
+  emailDomain: string;
+  timestamp: number;
+  signature: Array<any>;
+  error?: string;
+  error_description?: string;
+}
+
+interface inputGoogleAuthObject {
+  domain: number[]; // payment plan id
 }
 
 interface ComponentProps {
@@ -36,8 +54,13 @@ class Main extends React.Component<ComponentProps> {
     severity: "",
     isLoading: false,
     subscription: "",
+    data: "",
     proof: "",
     showReLoginButtonError: true,
+  };
+
+  private redirectToMain = (): void => {
+    Router.push("/");
   };
 
   handleError = (
@@ -84,10 +107,10 @@ class Main extends React.Component<ComponentProps> {
   };
 
   private generateProof = async (subscriptionData: SubscriptionData) => {
-    //this.showMessage(`Generating Proof....`);
+    //this.showMessage(`Generating Proof of Payment for PayPal...`);
     if (subscriptionData.subsPlanID === PayPalSubscriptionPlanId) {
-      console.log("calling generator.generatorProof: %s", proofFileName);
-      const generator = new ProofOfPaymentGenerator("../generator/", proofFileName, subscriptionData);
+      console.log("calling generator.generatorProof: %s", payPalProofFileName);
+      const generator = new ProofOfPaymentGenerator("../generator/", payPalProofFileName, subscriptionData);
       const [proof, publicSignals] = await generator.generateProof(
         Uint8Array.from(subscriptionData.signature),
         subscriptionData.timestamp,
@@ -101,10 +124,31 @@ class Main extends React.Component<ComponentProps> {
     return [false, "", ""] as const;
   };
 
+  private generateAuthProof = async (googleData: googleData) => {
+    //this.showMessage(`Generating Proof of Login for Google...`);
+
+    const loginInfo: LoginInfo = {
+      domain: googleData.emailDomain
+    }
+
+    const generator = new ProofOfLoginGenerator("../generator/", googleProofFileName);
+    const [proof, publicSignals] = await generator.generateProof(
+      Uint8Array.from(googleData.signature),
+      googleData.timestamp,
+      loginInfo
+    );
+
+    if (proof && publicSignals) {
+      return [true, proof, publicSignals] as const;
+    }
+    return [false, "", ""] as const;
+  };
+
   private verifyProofOfPayment = async (
     status: boolean,
     proof: any,
-    signal: any
+    signal: any,
+    type: string
   ): Promise<boolean> => {
     //this.showMessage(`Completed`);
     return await fetch("/api/VerifyProofOfPayment", {
@@ -112,7 +156,7 @@ class Main extends React.Component<ComponentProps> {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status: status, proof: proof, signal: signal }),
+      body: JSON.stringify({ status: status, proof: proof, signal: signal, type: type }),
       })
     .then((result) => {
       if (result.status === errorCode.VERIFICATION_FAILED) {
@@ -144,94 +188,163 @@ class Main extends React.Component<ComponentProps> {
     output.appendChild(node);
   };
 
-  private redirectToMain = (): void => {
-    Router.push("/");
+  private createCookie = async (
+    status: boolean,
+    proof: any,
+    signal: any,
+    data: any,
+    type: string
+  ) => {
+    if (status) {
+      const isGeneratedCookie = await this.verifyProofOfPayment(
+        status,
+        proof,
+        signal,
+        type
+      );
+      if (isGeneratedCookie) {
+        this.setState({
+          data: JSON.stringify(data, null, 4),
+          proof: JSON.stringify(proof, null, 4),
+        });
+      }
+      this.props.setIsExitButton(true);
+    } else {
+      this.handleError(
+        "Proof Generator Error",
+        "Payment record did not satisfy requirements",
+        "error",
+        false
+      );
+    }
+  };
+
+  private handlePayPalToken = async (
+    codeToken: string,
+    subscriptionCookie: string
+  ) => {
+    const subscriptionData: subscriptionData =
+      await this.getPayPalSubscriptionData(codeToken, subscriptionCookie);
+
+    if (
+      subscriptionData &&
+      subscriptionData.subsPlanID &&
+      subscriptionData.signature &&
+      subscriptionData.timestamp >= 0 &&
+      subscriptionData.subsAge >= 0
+    ) {
+      const [status, proof, signal] = await this.generateProof(
+        subscriptionData
+      );
+
+      this.createCookie(
+        status,
+        proof,
+        signal,
+        subscriptionData,
+        "subscription"
+      );
+    } else if (subscriptionData.error && subscriptionData.error_description) {
+      this.handleError(
+        subscriptionData.error,
+        subscriptionData.error_description
+      );
+    } else {
+      this.handleError(
+        "Client Error",
+        "Something Error when generating Proof!"
+      );
+    }
+  };
+
+  private verifyGoogleSignInData = async (googleCodeToken: string) => {
+    // ToDo
+    const data: oracleGoogleInputData = {
+      googleCodeToken: googleCodeToken,
+    };
+
+    return await sendRequestExternalAPI(
+      OracleBasedAPIURL + "/oracle/VerifyGoogleCredential",
+      JSON.stringify(data),
+      "POST",
+      { "Content-Type": "application/json" }
+    )
+      .then((response) => {
+        if (response.error) {
+          console.log(response);
+          this.handleError(response.error, response.error_description);
+        }
+        return response;
+      })
+      .catch((error) => {
+        this.setState({ showReLoginButtonError: false });
+        return error;
+      });
+  };
+
+  private handleGoogleToken = async (googleCodeToken: string) => {
+    const googleData: googleData = await this.verifyGoogleSignInData(
+      googleCodeToken
+    );
+
+    if (
+      googleData.emailDomain &&
+      googleData.signature &&
+      googleData.timestamp >= 0
+    ) {
+      const [status, proof, signal] = await this.generateAuthProof(googleData);
+
+      this.createCookie(status, proof, signal, googleData, "auth");
+    } else if (googleData.error && googleData.error_description) {
+      this.handleError(googleData.error, googleData.error_description);
+    } else {
+      this.handleError(
+        "Client Error",
+        "Something Error when generating Proof!"
+      );
+    }
   };
 
   async componentDidMount() {
     this.setState({ isLoading: true });
-    //this.showMessage(`Processing...`);
+    //this.showMessage(`Checking cookie...`);
 
     const proofCookie = Cookies.get("proof");
     const subscriptionCookie = Cookies.get("subscription");
+    const windowUrl = window.location.search;
+    const params = new URLSearchParams(windowUrl);
+    const googleCodeToken = params.get("google_code");
 
-    if (!proofCookie && !subscriptionCookie) {
-      this.redirectToMain();
-    }
+    if (!proofCookie) {
+      if (subscriptionCookie) {
+        //this.showMessage(
+        //  `Proof was not found, get paypal data from oracle....`
+        //);
 
-    if (!proofCookie && subscriptionCookie) {
-      const windowUrl = window.location.search;
-      const params = new URLSearchParams(windowUrl);
-      const codeToken = params.get("code");
+        const codeToken = params.get("code");
 
-      if (codeToken) {
-        console.log("**** PayPal's code token found");
-        console.log("**** calling oracle's GetSubscriptionInfo api...")
-        const subscriptionData: SubscriptionData =
-          await this.getPayPalSubscriptionData(codeToken, subscriptionCookie);
-
-        if (
-          subscriptionData &&
-          subscriptionData.subsPlanID &&
-          subscriptionData.signature &&
-          subscriptionData.timestamp >= 0 &&
-          subscriptionData.subsAge >= 0
-        ) {
-          console.log("**** generating proof...")
-          const [status, proof, signal] = await this.generateProof(
-            subscriptionData
-          );
-
-          if (status) {
-            console.log("**** calling portal's VerifyProofOfPayment api...")
-            const isGeneratedCookie = await this.verifyProofOfPayment(
-              status,
-              proof,
-              signal
-            );
-            if (isGeneratedCookie) {
-              this.setState({
-                subscription: JSON.stringify(subscriptionData, null, 4),
-                proof: JSON.stringify(proof, null, 4),
-              });
-            }
-            this.props.setIsExitButton(true);
-            console.log("**** proof processing completed")
-          } else {
-            this.handleError(
-              "Proof Generator Error",
-              "Payment record did not satisfy requirements",
-              "error",
-              false
-            );
-          }
-        } else if (
-          subscriptionData.error &&
-          subscriptionData.error_description
-        ) {
-          this.handleError(
-            subscriptionData.error,
-            subscriptionData.error_description
-          );
+        if (codeToken) {
+          await this.handlePayPalToken(codeToken, subscriptionCookie);
         } else {
-          this.handleError(
-            "Client Error",
-            "Something Error when generating Proof!"
-          );
+          this.handleError("Client Error", "Code Token is not found!");
         }
+      } else if (googleCodeToken) {
+        //this.showMessage(
+        //  `Proof was not found, get google data from oracle....`
+        //);
+        await this.handleGoogleToken(googleCodeToken);
       } else {
-        console.log("**** no PayPal's code token found");
-        this.handleError("Client Error", "Code Token is not found!");
+        this.redirectToMain();
       }
-    } else if (proofCookie) {
-      //this.showMessage(`Proof of payment verified`);
+    } else {
+      //this.showMessage(`Proof was found`);
       const proofCookieJson = JSON.parse(proofCookie);
       this.setState({
         proof: JSON.stringify(proofCookieJson, null, 4),
       });
-    } else {
-      this.redirectToMain();
+      this.props.setIsExitButton(true);
     }
+
     this.setState({ isLoading: false });
   }
 
@@ -262,10 +375,9 @@ class Main extends React.Component<ComponentProps> {
                   <CircularProgress />
                 </Box>
               ) : (
-                    <>
-			<Image src="/static/ozki-logo.png" width="260px" height="200px" />
-			<ExitButton />
-                    </>
+                <>
+	  	<Image src="/static/ozki-logo.png" width="260px" height="200px" />
+                </>
               )}
             </>
           )}
