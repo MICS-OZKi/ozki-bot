@@ -210,9 +210,13 @@ class Main extends React.Component<ComponentProps> {
       }
       this.props.setIsExitButton(true);
     } else {
+      const msg = (type === "subscription") ? 
+        "Your payment record is not valid for OZKi subscription" :
+        "Your login domain is not berkeley.edu";
+
       this.handleError(
         "Proof Generator Error",
-        "Payment record did not satisfy requirements",
+        msg,
         "error",
         false
       );

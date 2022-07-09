@@ -1,5 +1,5 @@
-import ProofGenerator from "ozki-lib/dist/proof-generator/src/ProofGenerator";
-import ZkUtils from "ozki-lib/dist/common/src/ZkUtils";
+import ProofGenerator from "ozki-toolkit/dist/proof-generator/src/ProofGenerator";
+import ZkUtils from "ozki-toolkit/dist/common/src/ZkUtils";
 
 export interface SubscriptionData {
   subsPlanID:           string;

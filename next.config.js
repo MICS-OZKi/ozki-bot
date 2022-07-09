@@ -20,14 +20,14 @@ const nextConfig = {
           {
             from: path.resolve(
               __dirname,
-              "node_modules/ozki-lib/dist/proof-generator/static/"
+              "node_modules/ozki-toolkit/dist/proof-generator/static/"
             ),
             to: path.resolve(__dirname, "public/generator/"),
           },
           {
             from: path.resolve(
               __dirname,
-              "node_modules/ozki-lib/dist/proof-verifier/static/"
+              "node_modules/ozki-toolkit/dist/proof-verifier/static/"
             ),
             to: path.resolve(__dirname, "public/verifier/"),
           },
