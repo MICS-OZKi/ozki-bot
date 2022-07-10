@@ -1,7 +1,7 @@
 {
-  "name": "ozki-portal",
+  "name": "ozki-bot",
   "version": "0.1.0",
-  "description": "OZKi sample webapp",
+  "description": "OZKi-BOT demo webapp",
   "private": true,
   "author": "Antony Halim (a-ha@berkeley.edu)",
   "license": "MIT",
