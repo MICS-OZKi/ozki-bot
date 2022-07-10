@@ -18,7 +18,7 @@ export default function FeaturedPost(props: FeaturedPostProps) {
 
   return (
     <Grid item xs={12} md={6}>
-      <Card sx={{ display: "flex", backgroundColor: "rgba(0, 0, 0, 0.87)" }}>
+      <Card sx={{ display: "flex", backgroundColor: "rgba(0, 0, 0, 0.60)" }}>
         <CardContent sx={{ flex: 1 }}>
           <Typography component="h2" variant="h5">
             {post.title}

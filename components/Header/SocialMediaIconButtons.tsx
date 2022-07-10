@@ -40,7 +40,7 @@ class SocialMediaIconButtons extends React.Component {
             component="span"
             size="medium"
             onClick={() => {
-              Router.push("/google-login");
+              Router.push("http://localhost:3000/google-login");
             }}
           >
             <Google fontSize="medium" />

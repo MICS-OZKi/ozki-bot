@@ -3,6 +3,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { Anchor } from "@mui/icons-material";
+import Image from 'next/image';
 import Box from "@mui/material/Box";
 
 interface HomePageFeaturedPostProps {
@@ -21,7 +22,7 @@ export default function HomePageFeaturedPost(props: HomePageFeaturedPostProps) {
     <Paper
       sx={{
         position: "relative",
-        backgroundColor: "rgba(0, 0, 0, 0.87)",
+        backgroundColor: "rgba(0, 0, 0, 0.50)",
         color: "#fff",
         mb: 4,
         backgroundSize: "cover",
@@ -36,7 +37,7 @@ export default function HomePageFeaturedPost(props: HomePageFeaturedPostProps) {
           bottom: 0,
           right: 0,
           left: 0,
-          backgroundColor: "rgba(0,0,0,.3)",
+          backgroundColor: "rgba(0,0,0,0.3)",
         }}
       />
       <Grid container>
@@ -54,8 +55,7 @@ export default function HomePageFeaturedPost(props: HomePageFeaturedPostProps) {
               color="inherit"
               gutterBottom
             >
-              <Anchor fontSize="inherit" />
-              {post.title}
+              <Image src="/ozki-bot.png" width="300"  height="200"></Image>
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
               {post.description}

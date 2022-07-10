@@ -28,6 +28,10 @@ const featuredPosts = [
     link: "Or click here",
     target: "http://localhost:3000/google-login",
   },
+  {
+    title: "Proof of Key",
+    description: "Play the game to try this feature.",
+  },
 ];
 
 class Home extends React.Component {

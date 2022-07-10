@@ -35,7 +35,7 @@ class HeaderTop extends React.Component<HeaderTopProps> {
                 color="inherit"
                 noWrap
               >
-                <Link href={"/"}>OZKi Shield</Link>
+                <Link href={"/"}>OZKi BOT</Link>
               </Typography>
             </Grid>
             {this.props.isMain && this.props.isExitButton ? (
