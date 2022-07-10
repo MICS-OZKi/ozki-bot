@@ -15,8 +15,8 @@ const pages = [
   { text: "Home", 	target: "/" },
   { text: "Doc", 	target: "https://vizualkei-labs.gitbook.io/ozki/" },
   { text: "Forum", 	target: "/" },
-  { text: "MICS", 	target: "https://ischoolonline.berkeley.edu/cybersecurity/" },
   { text: "Team", 	target: "https://vizualkei-labs.gitbook.io/ozki/project/members" },
+  { text: "Cyber-295", 	target: "https://www.ischool.berkeley.edu/courses/cyber/295" },
 ];
 
 const ResponsiveAppBar = () => {
