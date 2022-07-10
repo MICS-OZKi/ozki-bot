@@ -3,6 +3,7 @@ import { Grid, IconButton } from "@mui/material";
 import Router from "next/router";
 import React from "react";
 import { ReactNode } from "react";
+import { PayPalIconButton } from "../Icons/PayPalIconButton";
 
 class SocialMediaIconButtons extends React.Component {
   render(): ReactNode {
@@ -43,6 +44,17 @@ class SocialMediaIconButtons extends React.Component {
             }}
           >
             <Google fontSize="medium" />
+          </IconButton>
+           <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="span"
+            size="medium"
+            onClick={() => {
+              Router.push("http://127.0.0.1:3000/paypal-login");
+            }}
+          >
+            <PayPalIconButton />
           </IconButton>
         </Grid>
       </Grid>

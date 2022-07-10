@@ -90,7 +90,7 @@ class GoogleLoginButton extends React.Component {
               marginBottom: 5,
             }}
           >
-            {"Sign in with Google"}
+            {"Get Proof of Login"}
           </Typography>
           {!this.state.errorMessage ? (
             <div

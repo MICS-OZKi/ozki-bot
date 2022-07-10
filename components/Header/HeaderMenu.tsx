@@ -85,24 +85,26 @@ const ResponsiveAppBar = () => {
             {pages.map((page) => (
               <Link
                 key={page.text}
-                href={{ pathname: page.target }}
+                href={page.target}
                 style={{ textDecoration: "none", display: "block" }}
               >
-                <Button
-                  key={page.text}
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    fontWeight: "bold",
-                    color: "white",
-                    display: "block",
-                    "&:hover": {
-                      backgroundColor: "#fff",
-                      color: "#2E3B55",
-                    },
-                  }} // sx={{ my: 1, color: "white", display: "block" }}
-                >
-                  {page.text}
-                </Button>
+                <a target="_blank">
+                  <Button
+                    key={page.text}
+                    onClick={handleCloseNavMenu}
+                    sx={{
+                      fontWeight: "bold",
+                      color: "white",
+                      display: "block",
+                      "&:hover": {
+                        backgroundColor: "#fff",
+                        color: "#2E3B55",
+                      },
+                    }} // sx={{ my: 1, color: "white", display: "block" }}
+                  >
+                    {page.text}
+                  </Button>
+                </a>
               </Link>
             ))}
           </Box>

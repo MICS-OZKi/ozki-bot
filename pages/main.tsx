@@ -45,6 +45,7 @@ interface inputGoogleAuthObject {
 
 interface ComponentProps {
   setIsExitButton: (isExitButton: boolean) => void;
+   setIsProofVerified: (isVerified: boolean) => void;
 }
 
 class Main extends React.Component<ComponentProps> {
@@ -209,6 +210,7 @@ class Main extends React.Component<ComponentProps> {
         });
       }
       this.props.setIsExitButton(true);
+       this.props.setIsProofVerified(true);
     } else {
       const msg = (type === "subscription") ? 
         "Your payment record is not valid for OZKi subscription" :
@@ -281,6 +283,7 @@ class Main extends React.Component<ComponentProps> {
         return response;
       })
       .catch((error) => {
+        console.log(error);
         this.setState({ showReLoginButtonError: false });
         return error;
       });
@@ -310,6 +313,7 @@ class Main extends React.Component<ComponentProps> {
   };
 
   async componentDidMount() {
+    this.props.setIsProofVerified(false);
     this.setState({ isLoading: true });
     //this.showMessage(`Checking cookie...`);
 
@@ -347,6 +351,7 @@ class Main extends React.Component<ComponentProps> {
         proof: JSON.stringify(proofCookieJson, null, 4),
       });
       this.props.setIsExitButton(true);
+      this.props.setIsProofVerified(true);
     }
 
     this.setState({ isLoading: false });
@@ -380,7 +385,6 @@ class Main extends React.Component<ComponentProps> {
                 </Box>
               ) : (
                 <>
-	  	<Image src="/static/ozki-logo.png" width="260px" height="200px" />
                 </>
               )}
             </>
