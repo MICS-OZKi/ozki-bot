@@ -10,7 +10,7 @@ import { Grid } from "@mui/material";
 const homePageFeaturedPost = {
   title: "OZKi-BOT",
   description:
-    "OZKi-BOT is a demo webapp which protects the users' privacy by using the OZKi Proof Framework to implement authorization flows based on the Zero Knowledge Proof.",
+    "OZKi-BOT is a demo webapp which protects the users' privacy using the OZKi Proof Framework. The framework supports the implementation of authorization flows based on the Zero Knowledge Proof.",
   //image: "https://source.unsplash.com/random",
   //imageText: "main image description",
 };
