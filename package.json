@@ -12,7 +12,7 @@
     "start": "next dev",
     "lint": "next lint",
     "clean": "npm remove myProj && rm -rf node_modules && rm -rf package-lock.json",
-    "refresh": "npm run clean && npm install ../ozki-toolkit/ozki-toolkit-1.2.0.tgz"
+    "install-deps": "npm install ../ozki-toolkit/ozki-toolkit-1.2.6.tgz && npm install"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
