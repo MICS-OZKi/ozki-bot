@@ -31,8 +31,7 @@ function Game(props: GameProps) {
 
   return (
     <div className="container">
-      <h2>Welcome to the world of OZKi-BOT !</h2>
-
+	<h1> </h1>
       {isLoaded === false && (
         <div className="loading-overlay">
           <LinearProgressWithLabel value={loadingPercentage} />
@@ -42,8 +41,8 @@ function Game(props: GameProps) {
         unityProvider={unityProvider}
         style={{
           border: "1px solid black",
-          height: 600,
-          width: 800,
+          height: 768,
+          width: 1024,
         }}
         ref={canvasRef}
       />
