@@ -3,9 +3,7 @@ import Image from "next/image"
 import {
   AlertColor,
   Box,
-  CircularProgress,
-  Container,
-  CssBaseline,
+  CircularProgress
 } from "@mui/material";
 import Router from "next/router";
 import {
@@ -17,10 +15,10 @@ import {
 import { sendRequestExternalAPI } from "@/utils/request";
 import Cookies from "js-cookie";
 import MainPageError from "@/components/mainPageError";
-import ExitButton from "@/components/Header/exitButton";
 import { errorCode } from "@/config/code";
 import { ProofOfPaymentGenerator, SubscriptionData } from "./ProofOfPaymentGenerator";
 import { ProofOfLoginGenerator, LoginInfo } from "./ProofOfLoginGenerator";
+import Game from "@/components/Game/game";
 
 interface oracleSubscriptionInputData {
   code: string;
@@ -45,7 +43,8 @@ interface inputGoogleAuthObject {
 
 interface ComponentProps {
   setIsExitButton: (isExitButton: boolean) => void;
-   setIsProofVerified: (isVerified: boolean) => void;
+  setIsProofVerified: (isVerified: boolean) => void;
+  isUnityMounted: boolean;
 }
 
 class Main extends React.Component<ComponentProps> {
@@ -366,30 +365,62 @@ class Main extends React.Component<ComponentProps> {
           minHeight: "100vh",
         }}
       >
-        <CssBaseline />
-        <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
-          <div id="output" />
-          <hr />
-          {this.state.errorTitle !== "" ? (
-            <MainPageError
-              title={this.state.errorTitle}
-              message={this.state.errorDescription}
-              severity={"error"}
-              button={this.state.showReLoginButtonError}
-            />
-          ) : (
-            <>
-              {this.state.isLoading ? (
-                <Box justifyContent="center" sx={{ display: "flex" }}>
-                  <CircularProgress />
-                </Box>
-              ) : (
-                <>
-                </>
-              )}
-            </>
-          )}
-        </Container>
+        {/* <h1>Status</h1>
+        <div id="output" /> */}
+        <hr />
+        {this.state.errorTitle !== "" ? (
+          <MainPageError
+            title={this.state.errorTitle}
+            message={this.state.errorDescription}
+            severity={"error"}
+            button={this.state.showReLoginButtonError}
+          />
+        ) : (
+          <>
+            {this.state.isLoading ? (
+              <Box justifyContent="center" sx={{ display: "flex" }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <>
+                {/* {this.state.data ? (
+                    <>
+                      <h1>Data</h1>
+                      <div>
+                        <pre>{this.state.data}</pre>
+                      </div>
+                      <h1>Proof</h1>
+                      <div>
+                        <pre>{this.state.proof}</pre>
+                      </div>
+                    </>
+                    
+                  ) : (
+                    <>
+                      <h1>Proof</h1>
+                      <div>
+                        <pre>{this.state.proof}</pre>
+                      </div>
+                    </>
+                  )} */}
+
+                {/* <ExitButton setIsExitButton={this.props.setIsExitButton} /> */}
+
+                {this.props.isUnityMounted ? (
+                  <Box
+                    justifyContent="center"
+                    alignContent="center"
+                    sx={{ display: "flex" }}
+                  >
+                    <Game />
+                  </Box>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
+          </>
+        )}
       </Box>
     );
   }

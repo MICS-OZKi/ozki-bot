@@ -1,9 +1,9 @@
 import { AppBar, Toolbar, Grid, Typography } from "@mui/material";
-import Link from "next/link";
 import React from "react";
 import ExitButton from "@/components/Header/exitButton";
 import { Anchor } from "@mui/icons-material";
 import SocialMediaIconButtons from "@/components/Header/SocialMediaIconButtons";
+import Router from "next/router";
 // import HeaderTopButtonRightComponent from "./HeaderTopButtonRightComponent";
 
 interface HeaderTopProps {
@@ -34,8 +34,15 @@ class HeaderTop extends React.Component<HeaderTopProps> {
                 variant="h6"
                 color="inherit"
                 noWrap
+                  onClick={() => {
+                  if (window.unityWebgl && window.unityWebgl.isLoaded) {
+                    window.unityWebgl.unmount();
+                    delete window.unityWebgl;
+                  }
+                  Router.push("/");
+                }}
               >
-                <Link href={"/"}>OZKi BOT</Link>
+                OZKi BOT
               </Typography>
             </Grid>
             {this.props.isMain && this.props.isExitButton ? (

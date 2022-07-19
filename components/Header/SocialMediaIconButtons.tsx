@@ -12,7 +12,7 @@ class SocialMediaIconButtons extends React.Component {
         <Grid item>
           <IconButton
             color="primary"
-            aria-label="upload picture"
+            aria-label="Twitter"
             component="span"
             size="medium"
           >
@@ -20,7 +20,7 @@ class SocialMediaIconButtons extends React.Component {
           </IconButton>
           <IconButton
             color="primary"
-            aria-label="upload picture"
+            aria-label="Facebook"
             component="span"
             size="medium"
           >
@@ -28,7 +28,7 @@ class SocialMediaIconButtons extends React.Component {
           </IconButton>
           <IconButton
             color="primary"
-            aria-label="upload picture"
+            aria-label="YouTube"
             component="span"
             size="medium"
           >
@@ -36,10 +36,14 @@ class SocialMediaIconButtons extends React.Component {
           </IconButton>
           <IconButton
             color="primary"
-            aria-label="upload picture"
+            aria-label="PayPal"
             component="span"
             size="medium"
             onClick={() => {
+              if (window.unityWebgl && window.unityWebgl.isLoaded) {
+                window.unityWebgl.unmount();
+                delete window.unityWebgl;
+              }
               Router.push("http://localhost:3000/google-login");
             }}
           >
@@ -51,6 +55,10 @@ class SocialMediaIconButtons extends React.Component {
             component="span"
             size="medium"
             onClick={() => {
+              if (window.unityWebgl && window.unityWebgl.isLoaded) {
+                window.unityWebgl.unmount();
+                delete window.unityWebgl;
+              }
               Router.push("http://127.0.0.1:3000/paypal-login");
             }}
           >

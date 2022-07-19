@@ -4761,6 +4761,11 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
+"react-unity-webgl@^9.0.3":
+  "integrity" "sha512-3Sy0t1eSlSWGQ56asyLoMvjGhfdUAjpWzjwR8TSW/+EoDJdIN08/el2lVzTdTNlgLrMt31YWYRxcyBb8oEgYHw=="
+  "resolved" "https://registry.npmjs.org/react-unity-webgl/-/react-unity-webgl-9.0.4.tgz"
+  "version" "9.0.4"
+
 "react@^17.0.0 || ^18.0.0", "react@^17.0.2 || ^18.0.0-0", "react@^18.0.0", "react@^18.1.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.6.0", "react@>=16.8.0", "react@>=17.0.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"

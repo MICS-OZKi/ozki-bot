@@ -32,3 +32,10 @@ export const mainBackgroundImage = "/background2.jpeg";
 export const googleClientID = "16403292172-pvsrdogb25iqmfe5lncnqqmu1t82mj46.apps.googleusercontent.com"
 export const googleProofFileName = "ProveGoogleAuthMain";
 
+// Game Config
+export const pinCode = 7777;
+
+// leaderboard Config
+export const leaderboardURL = "http://localhost:3002";
+export const leaderboardAPI = `${leaderboardURL}/api/`;
+

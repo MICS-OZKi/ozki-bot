@@ -17,6 +17,7 @@ declare global {
   interface Window {
     paypal: any;
     google: any;
+    unityWebgl: any;
   }
 }
 
@@ -48,12 +49,14 @@ const darkTheme = (isMain: boolean, isProofVerified: boolean) =>
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const [isExitButton, setIsExitButton] = useState(false);
   const [isProofVerified, setIsProofVerified] = useState(false);
+  const [isUnityMounted, setIsUnityMounted] = useState(false);
 
   const isMain = [`/main`].includes(appProps.router.pathname);
   const isHome = [`/`].includes(appProps.router.pathname);
 
   function changeIsExitButtonState(isMainPage: boolean) {
     setIsExitButton(isMainPage);
+    setIsUnityMounted(isMainPage);
   }
 
   function changeIsProofVerified(isVerified: boolean) {
@@ -75,13 +78,14 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
           changeIsExitButtonState={changeIsExitButtonState}
         />
         <ResponsiveAppBar />
-        <Container component="main" maxWidth={isHome ? "lg" : "xs"}>
+        <Container component="main" maxWidth={isHome || isMain ? "lg" : "xs"}>
           <CssBaseline />
           {isMain ? (
             <Component
               {...pageProps}
               setIsExitButton={changeIsExitButtonState}
               setIsProofVerified={changeIsProofVerified}
+              isUnityMounted={isUnityMounted}
             />
           ) : (
             <Component {...pageProps} />

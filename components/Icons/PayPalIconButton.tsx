@@ -26,6 +26,3 @@ export const PayPalIconButton: React.FC<SvgIconProps> = (props) => (
   </SvgIcon>
 );
 
-const handleOnClick = (to: string) => () => {
-  window.open(to, "_blank");
-};

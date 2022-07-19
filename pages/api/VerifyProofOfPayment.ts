@@ -15,7 +15,6 @@ type Data = {
 };
 
 const validateProof = async (
-  status: boolean,
   proof: any,
   signal: any,
   type: string
@@ -25,29 +24,28 @@ const validateProof = async (
   console.log(proof);
   console.log("Output:");
   console.log(signal);
-  if (status) {
-    const filePath = serverPath("public/verifier/");
-    if (type === "subscription") {
-      try {
-        const verifier = new ProofOfPaymentVerifier(filePath, payPalProofFileName);
-        await verifier.verifyProof(proof, signal);
-        return true;
-      }
-      catch (error) {
-        return false;
-      }
-    }
-    else {
-      try {
-        const verifier = new ProofOfLoginVerifier(filePath, googleProofFileName);
-        await verifier.verifyProof(proof, signal);
-        return true;
-      }
-      catch (error) {
-        return false;
-      }
+  const filePath = serverPath("public/verifier/");
 
+  if (type === "subscription") {
+    try {
+      const verifier = new ProofOfPaymentVerifier(filePath, payPalProofFileName);
+      await verifier.verifyProof(proof, signal);
+      return true;
     }
+    catch (error) {
+      return false;
+    }
+  }
+  else {
+    try {
+      const verifier = new ProofOfLoginVerifier(filePath, googleProofFileName);
+      await verifier.verifyProof(proof, signal);
+      return true;
+    }
+    catch (error) {
+      return false;
+    }
+
   }
   return false;
 };
@@ -65,7 +63,6 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     const validatedProof = await validateProof(
-      req.body.status,
       req.body.proof,
       req.body.signal,
       req.body.type

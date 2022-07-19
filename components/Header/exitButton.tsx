@@ -18,6 +18,10 @@ class ExitButton extends React.Component<ExitButtonProps> {
     if (Cookies.get("subscription")) {
       Cookies.remove("subscription");
     }
+    if (window.unityWebgl && window.unityWebgl.isLoaded) {
+      window.unityWebgl.unmount();
+      delete window.unityWebgl;
+    }
     Router.push("/");
   };
   render() {
