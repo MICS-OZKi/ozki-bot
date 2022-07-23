@@ -33,7 +33,9 @@ export const googleClientID = "16403292172-pvsrdogb25iqmfe5lncnqqmu1t82mj46.apps
 export const googleProofFileName = "ProveGoogleAuthMain";
 
 // Game Config
-export const pinCode = 7777;
+export const pinCode = "7777";
+export const secretAnswerSalt = "aha8g6c89v193o5vk108";
+export const gameProofFileName = "GetAnswerHashMain";
 
 // leaderboard Config
 export const leaderboardURL = "http://localhost:3002";
