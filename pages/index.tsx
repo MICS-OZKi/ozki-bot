@@ -29,7 +29,7 @@ const featuredPosts = [
     target: "http://localhost:3000/google-login",
   },
   {
-    title: "Proof of Key",
+    title: "Proof of Hash",
     description: "Play the game to try this feature.",
   },
 ];
