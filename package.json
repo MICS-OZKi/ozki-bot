@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "OZKi-BOT demo webapp",
   "private": true,
-  "author": "Antony Halim (a-ha@berkeley.edu)",
+  "author": "a-ha@berkeley.edu, mariah.martinez@berkeley.edu",
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
