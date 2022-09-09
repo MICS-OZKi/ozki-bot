@@ -12,7 +12,7 @@
     "start": "next dev",
     "lint": "next lint",
     "clean": "npm remove myProj && rm -rf node_modules && rm -rf package-lock.json",
-    "install-deps": "npm install ../ozki-toolkit/ozki-toolkit-1.2.7.tgz && npm install && bin/gunzip-webgl-data.sh"
+    "install-deps": "npm install ../ozki-toolkit/ozki-toolkit-1.2.14.tgz && npm install && bin/gunzip-webgl-data.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
@@ -24,7 +24,7 @@
     "cookie": "^0.5.0",
     "js-cookie": "^3.0.1",
     "next": "12.1.6",
-    "ozki-toolkit": "file:../ozki-toolkit/ozki-toolkit-1.2.7.tgz",
+    "ozki-toolkit": "file:../ozki-toolkit/ozki-toolkit-1.2.14.tgz",
     "react": "^18.1.0",
     "react-dom": "18.1.0",
     "react-unity-webgl": "^9.0.3"
